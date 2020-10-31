@@ -65,6 +65,7 @@ class Erply(object):
         ,'getCustomerGroups'
         # ,'getDocuments'       Unimplemented from ERPLY side :(
         ,'getEmployees'
+        ,'getConfParameters'
         ,'getProducts'
         ,'getProductCategories'
         ,'getProductCostForSpecificAmount'     # untested
@@ -80,10 +81,17 @@ class Erply(object):
         ,'getWarehouses'
         ,'verifyUser'
     )
-    ERPLY_CSV = ('getProductStockCSV', 'getSalesReport')
-    ERPLY_POST = ('saveProduct',)
+    ERPLY_CSV = (
+        'getProductStockCSV',
+        'getSalesReport',
+        'getAmountsOnOrder',
+    )
+    ERPLY_POST = (
+        'saveProduct',
+        'saveCampaign',
+        )
 
-    def __init__(self, auth, erply_api_url=None, wait_on_limit=False):
+    def __init__(self, auth, erply_api_url=None, wait_on_limit=False, delimiter = ','):
         self.auth = auth
         self._key = None
 
@@ -94,6 +102,12 @@ class Erply(object):
 
         # User-specified Erply API url
         self.erply_api_url = erply_api_url
+
+        self.delimiter = delimiter
+
+    def fetch_config(self):
+        self.config = self.getConfParameters().records[0][0]
+        return self.config
 
     @property
     def _payload(self):
@@ -339,7 +353,7 @@ class ErplyCSVResponse(object):
                 raise ValueError
             # XXX: Check whether we have to make it configurable...
             # XXX: Should we remove header and footer?
-            return csv.reader(f.text.splitlines(), delimiter=';')
+            return csv.reader(f.text.splitlines(), delimiter=self.erply.delimiter)
 
 
 class ErplyBulkResponse(object):

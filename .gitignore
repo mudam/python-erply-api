@@ -5,3 +5,4 @@
 .tox/
 dist/
 MANIFEST
+tests/context.py
