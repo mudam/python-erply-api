@@ -75,6 +75,7 @@ class Erply(object):
         ,'getProductStock'                     # untested
         ,'getProductUnits'
         ,'getPurchaseDocuments'
+        ,'getBrands'
         ,'getReports'
         ,'getSalesDocuments'
         ,'getServices'
