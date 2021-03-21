@@ -74,6 +74,7 @@ class Erply(object):
         ,'getProductPriorityGroups'            # untested
         ,'getProductStock'                     # untested
         ,'getProductUnits'
+        ,'getBrands'
         ,'getPurchaseDocuments'
         ,'getReports'
         ,'getSalesDocuments'
