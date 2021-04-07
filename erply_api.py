@@ -80,6 +80,7 @@ class Erply(object):
         ,'getReports'
         ,'getSalesDocuments'
         ,'getServices'
+        ,'getSuppliers'
         ,'getWarehouses'
         ,'verifyUser'
     )
