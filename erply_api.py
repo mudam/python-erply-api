@@ -27,6 +27,8 @@ except ImportError:
 logger = logging.getLogger(__name__)
 logger.addHandler(NullHandler())
 
+requests.adapters.DEFAULT_RETRIES = 5
+
 class ErplyException(Exception):
     pass
 
@@ -149,13 +151,7 @@ class Erply(object):
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 
         logger.debug('Erply request %s', data.get('request'))
-        retries = requests.Retry(total=3, backoff_factor=1, 
-                                 status_forcelist=[429, 500, 502, 503, 504])
-        adapter = requests.adapters.HTTPAdapter(max_retries=retry_strategy)
-        http = requests.Session()
-        http.mount("https://", adapter)
-        http.mount("http://", adapter)
-        resp = http.post(self.api_url, data=data, headers=headers)
+        resp = requests.post(self.api_url, data=data, headers=headers)
 
         if resp.status_code != requests.codes.ok:
             raise ValueError('Request failed with error {}'.format(resp.status_code))
